@@ -245,8 +245,8 @@
           <div class="li2-box carbox">
             <div class="address-wrap">
               <div class="address-left">
-                <!-- <span class="zd">置顶</span>
-                <span>vue</span>
+                <span class="zd">置顶</span>
+                <span></span>
               </div>
               <div class="address-right">
                 <svg t="1663149212139" class="icon" viewBox="0 0 1024 1024" version="1.1"
@@ -255,33 +255,40 @@
                     d="M192 512a320 320 0 1 1 640 0 320 320 0 0 1-640 0zM512 128a384 384 0 1 0 0 768 384 384 0 0 0 0-768z m21.333333 224a32 32 0 0 0-64 0V554.666667h202.666667a32 32 0 0 0 0-64H533.333333V352z"
                     fill="#222222" p-id="1980"></path>
                 </svg>
-                <span>2022-09-14 15:43:23</span>
+                <span>2025-10-25 12:00:23</span>
               </div>
             </div>
 
-            <p>Vue CLI(1): npm run build打包优化</p>
+            <h3 style="text-align: center;">git大文件推送不成功解决方法</h3>
             <div class="text-img">
-              <img src="./img/project/uniapp.png" alt="">
-              <img src="./img/project/daohanglan.png" alt="">
+  
             </div>
-            <p>原因一：vue-cli npm run build 命令打包时默认会把 dependencies 中的依赖统一打包，这就导致打包后的 vendor.js 文件过大，从而使得首次启动时下载 vendor.js
-              缓慢。</p>
+            <p>原因：通过查阅了一些资料，我发现是因为GitHub对提交的文件大小做了限制，GitHub会阻止超过100 MB的推送（单文件）</p>
             <div class="text-block">
               <blockquote>
-                解决:vue、axios、element-ui、iView基本不再修改的依赖cdn引入不必要打包到 vendor.js 中
+                解决方法:调整GitHub服务对应的单次上传大小配置
               </blockquote>
             </div>
             <p class="text-hover">
-              ①在项目 根目录 index.html 使用cdn节点引入各种依赖 <br>
-              ②在项目 根目录 build/webpack.base.config.js 中 module.exports 内添加 externals <br>
-              ③在项目 根目录 src/mian.js 中将以上通过CDN已经引入的依赖 import ... from ... 删除(如：import Vue from
-              'vue')，若没有删除则webpack还是会把对应的依赖进行打包。
+              1、将本地 http.postBuffer 数值调整到GitHub服务对应的单次上传大小配置，我这里设置的是500MB。<br>
+              http.postBuffer默认单位为B（字节），所以500MB=1024*1024*500。
             </p>
 
 
-            <p>原因二：vue-cli npm run build 命令打包时默认会生成 相对应的map(调试和日志代码)文件，从而导致打包后的整个 static文件夹
-              过大(尤其是vendor.js.map最大)，使得部署和上传缓慢。</p>
-            <div class="text-block">
+            <p>#方法一：全局配置 git config --global http.postBuffer 524288000  
+            <br>或者
+            <br># 方法二：当前仓库配置 git config http.postBuffer 524288000。</p>
+
+            <p class="text-hover">
+              2、查看 http.postBuffer数值是否设置成功
+            </p>
+            <p># 查看当前的Git配置
+            <br>git config --list</p>
+
+            <p class="text-hover">
+              3、最后在重新使用git push推送代码到GitHub远程仓库中
+            </p>
+            <!-- <div class="text-block">
               <blockquote>
                 解决:webpack打包时不产生map文件
               </blockquote>
@@ -304,8 +311,8 @@
               cnpm install --save-dev compression-webpack-plugin@1.1.12 //1.1最新版 <br>
               ③compression-webpack-plugin安装完成后，npm run build 执行后会发现js文件夹内每个js文件都有一个相对应的gz后缀文件，而且gz文件比相对应的js文件小很多。浏览器如果支持
               g-zip 会自动查找有没有gz文件，找到了就直接加载gz文件然后本地解压并执行。
-            </p>
-
+            </p> -->
+<!-- 
 
           </div>
         </div>
